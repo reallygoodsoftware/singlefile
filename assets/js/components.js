@@ -1,0 +1,1 @@
+import { html, render } from 'https://esm.sh/htm/preact/standalone';
