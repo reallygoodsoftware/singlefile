@@ -134,6 +134,7 @@ Add the `.ui-button` class to any `<button>` or `<a>` element. ([Read More](http
 
 ```html
 <button class="ui-button">Do Stuff</button>
+<button class="ui-button --minimal">Do Stuff</button>
 ```
 
 **Boxes**
@@ -239,11 +240,78 @@ Use `this.value` to get the current value of the form input, and `ui-change` to 
 </ui-state>
 ```
 
-More Useful Info
+**More Mini**
 
-- There are 20+ mini attributes. See the full list here.
+- There are 20+ mini attributes. See the full list [here](https://mini-js.com/reference.md).
 - State variables get converted from dash case to camel case (`first-name` becomes `firstName`)
 
+
+<br/>
+
+# Deeper Frontend Interactivity
+
+
+### Add a mini.js component to the html
+
+Pass the `component` property to the `<ui-state>` tag to tell it which component to use, and pass in starting state where applicable.
+
+```html
+<ui-state component="counter" count="25">
+</ui-state>
+```
+
+### Define the component in components.js
+
+Use mini to create the component and manage state. Then use preact standalone to render it.
+
+```javascript
+import { html, render } from 'https://esm.sh/htm/preact/standalone';
+MiniJS.register('counter', {
+  init() {
+    this.paint();
+  },
+  paint() {
+    const Counter = () => html`
+      <div>Content Here</div>
+    `
+    render(Counter(), this)
+  }
+})
+```
+
+### Use normal mini attributes to add behaviour
+
+```javascript
+import { html, render } from 'https://esm.sh/htm/preact/standalone';
+MiniJS.register('counter', {
+  init() {
+    this.paint();
+  },
+  paint() {
+    const Counter = () => html`
+      <div ui-text="count"></div>
+      <button ui-click="count++">+</button>
+    `
+    render(Counter(), this)
+  }
+})
+```
+
+### Use refs to access DOM elements within a component
+
+```html
+<ui-state component="counter">
+  <input ref="primary-input" type="text">
+</ui-state>
+```
+
+```javascript
+MiniJS.register('counter', {
+  init() {
+    console.log(this.refs['primary-input'].value)
+  }
+})
+```
 
 <br/>
 
