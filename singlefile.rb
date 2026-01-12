@@ -1,21 +1,61 @@
 require 'bundler/setup'
+require 'dotenv/load'
 require 'sinatra'
+require 'sinatra/activerecord'
 require 'sinatra/reloader' if development?
 require 'redcarpet'
 require 'nokogiri'
 require 'active_support/all'
+require 'bcrypt'
 require_relative 'helpers'
+require_relative 'models/user'
+
+set :database_file, 'config/database.yml'
 
 configure :development do
   also_reload 'helpers.rb'
+  also_reload 'models/*.rb'
 end
 
 helpers AppHelpers
 
-set :host_authorization, { permitted_hosts: ['single-file.dev'] }
+set :host_authorization, { permitted_hosts: ['single-file.dev', 'localhost'] }
 set :public_folder, '.'
 
+# Enable sessions for user authentication
+enable :sessions
+set :session_secret, ENV['SESSION_SECRET'] || 'change_me_in_production'
+
+# Public routes
 get '/' do
-  content = File.read("readme.md")
-  erb markdown(content), layout: :"layout.html"
+  @content = File.read("readme.md")
+  view :"pages/home"
 end
+
+get "/about" do
+  @content = File.read("readme.md")
+  view :"pages/about"
+end
+
+# Login routes
+get '/login' do
+  redirect '/' if logged_in?
+  view :"pages/login"
+end
+
+post '/login' do
+  user = User.find_by(email: params[:email])
+  if user&.authenticate(params[:password])
+    session[:user_id] = user.id
+    redirect '/'
+  else
+    @error = "Invalid email or password"
+    view :"pages/login"
+  end
+end
+
+get '/logout' do
+  session.clear
+  redirect '/login'
+end
+

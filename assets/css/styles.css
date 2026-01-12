@@ -1,4 +1,26 @@
-body {
+:root {
   --ui-font-family: system-ui, sans-serif;
   --ui-font-family-headings: "Bricolage Grotesque", sans-serif;
+  --ui-styled-text-font-size: 15px ;
+}
+
+.htmx-indicator {
+  display: none;
+}
+
+.htmx-request .htmx-indicator,
+.htmx-request.htmx-indicator {
+  display: block;
+}
+
+.htmx-request > *:not(.htmx-indicator) {
+  visibility: hidden;
+}
+
+.htmx-request > .htmx-indicator {
+  display: block;
+}
+
+body.htmx-settling #main-content {
+  display: none;
 }

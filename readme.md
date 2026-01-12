@@ -71,8 +71,10 @@ We've taken some liberties with our definition. What we're aiming for is:
 - Modify the 4 core CSS defaults in `styles.css`
 
 ```css
---ui-font-family: 
---ui-font-family-headings:
+:root {
+  --ui-font-family: 
+  --ui-font-family-headings:
+}
 ```
 
 
@@ -111,7 +113,7 @@ Use any of the 50,000+ Tailwind classes available through Litewind. We recommend
 
 **Styling Forms**
 
-Add `.ui-form` to any form to make all of the input elements inside of it look beautiful and consistent.
+Add `.ui-form` to any form to make all of the input elements inside of it look beautiful and consistent. ([Read More & Demos](https://base-styles.com/forms.md)).
 
 ```html
 <form class="ui-form"></form>
@@ -119,7 +121,7 @@ Add `.ui-form` to any form to make all of the input elements inside of it look b
 
 **Styling Prose**
 
-Wrap the `.ui-styled-text` class around any html designed to render articles, markdown, or prose.
+Wrap the `.ui-styled-text` class around any html designed to render articles, markdown, or prose. ([Read More & Demos](https://base-styles.com/styled-text.md)).
 
 ```html
 <div class="ui-styled-text">
@@ -130,16 +132,23 @@ Wrap the `.ui-styled-text` class around any html designed to render articles, ma
 
 **Buttons**
 
-Add the `.ui-button` class to any `<button>` or `<a>` element. ([Read More](https://base-styles.com/buttons.md) about Base Styles buttons)
+Add the `.ui-button` class to any `<button>` or `<a>` element. ([Read More & Demos](https://base-styles.com/buttons.md)).
+
+<div class="flex gap-2">
+  <button class="ui-button --solid">Solid</button>
+  <button class="ui-button">Normal</button>
+  <button class="ui-button --minimal">Minimal</button>
+</div>
 
 ```html
-<button class="ui-button">Do Stuff</button>
-<button class="ui-button --minimal">Do Stuff</button>
+<button class="ui-button --solid">Solid</button>
+<button class="ui-button">Normal</button>
+<button class="ui-button --minimal">Minimal</button>
 ```
 
 **Boxes**
 
-Use the `.ui-box` class to create a section of elevated content. ([Read More](https://base-styles.com/boxes.md) about Base Styles boxes).
+Use the `.ui-box` class to create a section of elevated content. ([Read More & Demos](https://base-styles.com/boxes.md)).
 
 ```html
 <div class="ui-box"></div>
@@ -147,32 +156,42 @@ Use the `.ui-box` class to create a section of elevated content. ([Read More](ht
 
 **Titles**
 
-Add the `.ui-title` class to any title, or create a `.ui-titlepair` for a title with a tagline.
+Add the `.ui-title` class to any title, or create a `.ui-titlepair` for a title with a tagline. ([Read More & Demos](https://base-styles.com/titles.md)).
 
 ```html
- <h3 class="ui-title">Coffee</h3>
+<h3 class="ui-title">Coffee</h3>
 ```
 
 ```html
 <div class="ui-titlepair">
-  <h3 class="--title ">Coffee</h3>
-  <p class="--description">Size: Xl</p>
+  <h3 class="--title">Coffee</h3>
+  <p class="--description">Size: XL</p>
 </div>
 ```
 
 **Chips**
 
-Display a list of tags using the `.ui-chip` class. ([Read More](https://base-styles.com/chips.md) about Base Styles chips).
+Display a list of tags using the `.ui-chip` class. ([Read More & Demos](https://base-styles.com/chips.md)).
+
+<div class="flex gap-2">
+  <div class="ui-chip --sm --green">Green </div>
+  <div class="ui-chip --sm --blue">Blue</div>
+  <div class="ui-chip --sm --purple">Purple</div>
+</div>
 
 ```html
-<div class="ui-chip">Default</div>
+<div class="ui-chip --sm --green">Default</div>
+<div class="ui-chip --sm --blue">Solid</div>
+<div class="ui-chip --sm --purple">Minimal</div>
 ```
 **Tooltips**
 
 Add an `aria-label` to an element alongside the `.ui-tooltip` class to get clean animated plain text tooltips.
+[Read More & Demos](https://base-styles.com/tooltips.md)).
+
 
 ```html
- <a href="#" class="ui-tooltip--top" aria-label="Use the ui-tooltip--top class">
+<a href="#" class="ui-tooltip --top" aria-label="Use the ui-tooltip --top class">
   Tooltip Top
 </a>
 ```
@@ -180,6 +199,18 @@ Add an `aria-label` to an element alongside the `.ui-tooltip` class to get clean
 **Dropdowns**
 
 Use popover elements wrapped in a `.ui-dropdown` to create customizable, styled dropdowns. ([Read More](https://base-styles.com/dropdowns.md) about Base Styles Dropdowns).
+
+
+<div class="ui-dropdown">
+  <button class="--trigger" popovertarget="dropdown-content">
+    Click To Open
+  </button>
+  <div class="--drawer --bottom p-1 " id="dropdown-content" popover>
+    <a class="ui-button --minimal">
+      Google.com
+    </a>
+  </div>
+</div>
 
 ```html
 <div class="ui-dropdown">
@@ -194,12 +225,27 @@ Use popover elements wrapped in a `.ui-dropdown` to create customizable, styled 
 </div>
 ```
 
-**Modals**
+
+**Modal Dialogs**
 
 Use `commandfor` and add the `.ui-modal` class to your dialog element. ([Read More](https://base-styles.com/modals.md) about Base Styles modals).
 
+<div>
+<button class="ui-button --destructive" commandfor="confirm-modal" command="show-modal">Delete Record</button>
+<dialog id="confirm-modal" class="ui-modal" closedby="any">
+  <header class="--header">
+    <h1 class="--title">Delete Record?</h1>
+  </header>
+  <p class="--description">Are you sure you want to delete this record? This action cannot be undone.</p>
+  <footer class="--footer">
+    <button class="ui-button" commandfor="confirm-modal" command="close">Cancel</button>
+    <button class="ui-button --destructive" commandfor="confirm-modal" command="close">Delete</button>
+  </footer>
+</dialog>
+</div>
+
 ```html
-<button commandfor="confirm-dialog" command="show-dialog">
+<button commandfor="confirm-dialog" command="show-modal">
   Delete Record
 </button>
 <dialog class="ui-modal" id="confirm-dialog" closedby="any" >
@@ -208,13 +254,33 @@ Use `commandfor` and add the `.ui-modal` class to your dialog element. ([Read Mo
 </dialog>
 ```
 
+**Modals From URL**
+
+Combine `commandfor` and `command="show-dialog"` with `hx-get` and `hx-target` to open a modal from a remote url.
+
+
+<div>
+<button class="ui-button" commandfor="main-modal" command="show-modal" hx-get="/about" hx-target="#main-modal">
+  Open
+</button>
+</div>
+
+
+<div>
+<button commandfor="main-modal" command="show-modal" hx-get="/about" hx-target="#main-modal">Open Remote Modal</button>
+<dialog class="ui-modal" id="confirm-dialog" closedby="any">
+  <p>Are you sure? This action cannot be undone</p>
+  <button class="ui-button">Continue</button>
+</dialog>
+</div>
+
 <br/>
 
 # Simple Frontend Interactivity 
 
 **Make an element dynamic, define some simple state, and render the value**
 
-```
+```html
 <ui-state message="Hello World!">
   <div ui-text="message"></div>
 </ui-state>
@@ -222,10 +288,10 @@ Use `commandfor` and add the `.ui-modal` class to your dialog element. ([Read Mo
 
 **Use javascript to update state from user interaction**
 
-```
-<ui-state count="0"> 
+```html
+<ui-state count="0">
   <button ui-click="count++">Increment</button>
-  <div ui-text="count"></div> 
+  <div ui-text="count"></div>
 </ui-state>
 ```
 
@@ -311,35 +377,6 @@ MiniJS.register('counter', {
     console.log(this.refs['primary-input'].value)
   }
 })
-```
-
-<br/>
-
-# More Snippets
-
-**Render dynamic content inside your html**
-
-Use the `<%= %>` syntax inside your html files ([Read More]() about Embedded Ruby). 
-
-```erb
-<%= Time.now %>
-```
-
-
-**Forms** 
-
-```html
-<form action="">
-
-</form>
-```
-
-**Helpers**
-
-Use any of ActiveSupport's 100+ methods. ([Read More]() about ActiveSupport).
-
-```
-<%= 'dublin'.capitalize %>
 ```
 
 

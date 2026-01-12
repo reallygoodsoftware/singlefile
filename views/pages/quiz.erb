@@ -1,0 +1,21 @@
+<ui-state selected-topic="" selected-game="" players="" scores="">
+  <div class="flex gap-4 min-h-screen">
+    <!-- Left Panel -->
+    <div class="w-64 flex-shrink-0">
+      <ui-state component="players-panel"></ui-state>
+      <ui-state component="topics-panel"></ui-state>
+    </div>
+    
+    <!-- Center Content -->
+    <div class="flex-1">
+      <ui-state component="game-chooser"></ui-state>
+      <ui-state component="quiz"></ui-state>
+      <ui-state component="gibberish"></ui-state>
+    </div>
+    
+    <!-- Right Panel -->
+    <div class="w-64 flex-shrink-0">
+      <ui-state component="scoreboard"></ui-state>
+    </div>
+  </div>
+</ui-state>

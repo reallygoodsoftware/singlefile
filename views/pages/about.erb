@@ -1,0 +1,14 @@
+<% @main_css_classes="w-full max-w-5xl mx-auto py-4 flex items-center justify-center" %>
+<% @hide_sidebar = true %>
+
+<div class="ui-styled-text text-center">
+  Lil bit of content
+</div>
+
+<% if drawer_request? %>
+  <script>
+    el = document.getElementById('right-drawer');
+    el.className += ' <%= @main_css_classes %>';
+    el.showModal();
+  </script>
+<% end %>

@@ -1,1 +1,1 @@
-import { html, render } from 'https://esm.sh/htm/preact/standalone';
+import { html, render } from 'https://esm.sh/htm/preact/standalone'

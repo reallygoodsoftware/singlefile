@@ -1,0 +1,84 @@
+
+<style>
+  .ui-styled-text pre {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 1.5em 0;
+  }
+
+  .ui-styled-text pre code {
+    line-height: 1.6;
+    max-height: 600px;
+    overflow-y: auto;
+    display: block;
+    padding: 1.25rem;
+    background-color: #1a1f2a !important;
+    color: #fff;
+    border-radius: 8px;
+  }
+
+  .code-copy-button {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .code-copy-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 1);
+  }
+
+  .code-copy-button.copied {
+    background: rgba(46, 160, 67, 0.3);
+    border-color: rgba(46, 160, 67, 0.5);
+  }
+</style>
+
+<script>
+  // Initialize once the DOM is fully loaded
+  document.addEventListener('DOMContentLoaded', () => {
+    // Find all code blocks in ui-styled-text
+    const codeBlocks = document.querySelectorAll('.ui-styled-text pre code');
+
+    codeBlocks.forEach(block => {
+      // Apply syntax highlighting
+      if (window.hljs) {
+        hljs.highlightBlock(block);
+      }
+
+      // Add copy button
+      const pre = block.parentElement;
+      const button = document.createElement('button');
+      button.className = 'code-copy-button';
+      button.textContent = 'Copy';
+      button.type = 'button';
+
+      button.addEventListener('click', async () => {
+        const code = block.textContent;
+        try {
+          await navigator.clipboard.writeText(code);
+          button.textContent = 'Copied!';
+          button.classList.add('copied');
+          setTimeout(() => {
+            button.textContent = 'Copy';
+            button.classList.remove('copied');
+          }, 2000);
+        } catch (err) {
+          console.error('Failed to copy:', err);
+        }
+      });
+
+      pre.style.position = 'relative';
+      pre.appendChild(button);
+    });
+  });
+</script>

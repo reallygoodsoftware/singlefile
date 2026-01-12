@@ -21,6 +21,26 @@ module AppHelpers
     end
   end
 
+  def view(template, opts = {})
+    layout = :layout 
+    layout = false if request.env['HTTP_HX_TARGET'] == 'right-drawer'
+    layout = false if request.env['HTTP_HX_TARGET'] == 'main-modal'
+    erb template, { layout: layout }.merge(opts)
+  end
+
+  # User session authentication helpers
+  def current_user
+    @current_user ||= User.find_by(id: session[:user_id]) if session[:user_id]
+  end
+
+  def logged_in?
+    !!current_user
+  end
+
+  def require_login!
+    redirect '/login' unless logged_in?
+  end
+
   def markdown(text)
     markdown = Redcarpet::Markdown.new(
       Redcarpet::Render::HTML.new(
