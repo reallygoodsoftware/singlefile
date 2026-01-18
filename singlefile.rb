@@ -1,21 +1,11 @@
 # Ruby version check
-raise "Ruby 3.1+ required (you have #{RUBY_VERSION})" unless RUBY_VERSION >= "3.1"
+raise "Ruby 3.2+ required (you have #{RUBY_VERSION})" unless RUBY_VERSION >= "3.2"
 
 require 'bundler/inline'
-require 'dotenv/load'
-require 'sinatra'
-require 'sinatra/activerecord'
-require 'sinatra/reloader' if development?
-require 'redcarpet'
-require 'nokogiri'
-require 'active_support/all'
-require 'bcrypt'
-require_relative 'helpers'
-require_relative 'db/models/user'
 
-gemfile do
+gemfile(true) do
   source 'https://rubygems.org'
-  ruby '3.1.2'
+  ruby '3.2.0'
 
   gem 'sinatra', '~> 4.1.1'
   gem 'sinatra-contrib', '~> 4.1.1'
@@ -32,7 +22,20 @@ gemfile do
   gem 'dotenv', '~> 3.2.0'
 end
 
-set :database_file, 'db/database.yml'
+require 'dotenv/load'
+require 'sinatra'
+require 'sinatra/activerecord'
+require 'sinatra/reloader' if development?
+require 'redcarpet'
+require 'nokogiri'
+require 'active_support/all'
+require 'bcrypt'
+require_relative 'helpers'
+require_relative 'db/models/user'
+
+set :database_file, File.expand_path('db/database.yml', __dir__)
+set :views, File.expand_path('views', __dir__)
+set :public_folder, File.expand_path('.', __dir__)
 
 configure :development do
   also_reload 'helpers.rb'
@@ -42,7 +45,6 @@ end
 helpers AppHelpers
 
 set :host_authorization, { permitted_hosts: ['single-file.dev', 'localhost'] }
-set :public_folder, '.'
 # Disable X-Frame-Options to allow iframe embedding
 set :protection, except: [:frame_options]
 
@@ -88,3 +90,8 @@ get '/logout' do
   redirect '/login'
 end
 
+port = ENV['PORT'] || ARGV.find { |arg| arg =~ /^-p(\d+)$/ && $1 } || ARGV[ARGV.index('-p') + 1] rescue nil || 4567
+set :port, port.to_i
+
+puts "✓ SingleFile starting on http://localhost:#{port}"
+Sinatra::Application.run!
