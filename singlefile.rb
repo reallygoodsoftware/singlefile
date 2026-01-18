@@ -1,4 +1,7 @@
-require 'bundler/setup'
+# Ruby version check
+raise "Ruby 3.1+ required (you have #{RUBY_VERSION})" unless RUBY_VERSION >= "3.1"
+
+require 'bundler/inline'
 require 'dotenv/load'
 require 'sinatra'
 require 'sinatra/activerecord'
@@ -8,19 +11,45 @@ require 'nokogiri'
 require 'active_support/all'
 require 'bcrypt'
 require_relative 'helpers'
-require_relative 'models/user'
+require_relative 'db/models/user'
 
-set :database_file, 'config/database.yml'
+gemfile do
+  source 'https://rubygems.org'
+  ruby '3.1.2'
+
+  gem 'sinatra', '~> 4.1.1'
+  gem 'sinatra-contrib', '~> 4.1.1'
+  gem 'sinatra-activerecord', '~> 2.0.28'
+  gem 'activesupport', '~> 7.2.3'
+  gem 'puma', '~> 6.5.0'
+  gem 'rackup', '~> 2.2.1'
+  gem 'redcarpet', '~> 3.6.0'
+  gem 'nokogiri', '~> 1.18.9'
+  gem 'passenger', '~> 6.0.27'
+  gem 'pg', '~> 1.6.3'
+  gem 'rake', '~> 13.3.0'
+  gem 'bcrypt', '~> 3.1.21'
+  gem 'dotenv', '~> 3.2.0'
+end
+
+set :database_file, 'db/database.yml'
 
 configure :development do
   also_reload 'helpers.rb'
-  also_reload 'models/*.rb'
+  also_reload 'db/models/*.rb'
 end
 
 helpers AppHelpers
 
 set :host_authorization, { permitted_hosts: ['single-file.dev', 'localhost'] }
 set :public_folder, '.'
+# Disable X-Frame-Options to allow iframe embedding
+set :protection, except: [:frame_options]
+
+before do
+  # Allow embedding in iframes from any origin
+  headers['Content-Security-Policy'] = "frame-ancestors *"
+end
 
 # Enable sessions for user authentication
 enable :sessions
