@@ -62,6 +62,10 @@ We've taken some liberties with our definition. What we're aiming for is:
 
 <br/>
 
+<div class="hide-on-website">
+
 # Documentation
 
 https://docs.single-file.dev
+
+</div>
