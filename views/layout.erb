@@ -1,5 +1,3 @@
-<% font_family = "Bricolage Grotesque" %>
-<% font_family_headers = "Plus Jakarta Sans" %>
 <!-- examples/layout.html.erb -->
 <!DOCTYPE html>
 <html>
@@ -19,7 +17,6 @@
     <meta property="og:image" content="<%= metadata[:image] %>" />
     <meta name="twitter:image" content="<%= metadata[:image] %>" />
     <meta property="og:url" content="<%= metadata[:url] %>" />
-    <meta name="htmx-config" content='{"scrollIntoViewOnBoost":false}'>
 
     <!-- Favicons -->
     <link rel="icon" type="favicon.ico" href="assets/images/favicon.ico">
@@ -28,7 +25,8 @@
     <style><%= '@layer theme, base, components, utilities, properties;' %> </style> 
 
     <!-- Vendor Assets -->
-    <script src="/assets/vendor/htmx/2.0.8.js" ></script>
+    <meta name="htmx-config" content='{"implicitInheritance": true, "morphSkip": ".persist-across-nav"}'>
+    <script src="/assets/vendor/htmx/4.0.0-alpha-6.js" ></script>
     <script src='/assets/vendor/minijs/0.7.5-alpha.js'></script>
     <script src="/assets/vendor/highlight/9.15.6.js"></script>
     <link   href='/assets/vendor/base-styles/0.0.17.css' rel='stylesheet'>
@@ -47,7 +45,7 @@
     <link id="google-font-body"    href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700&display=swap" rel="stylesheet">
 
   </head>
-  <body class="min-h-screen" hx-boost="true" hx-swap="morph" >
+  <body class="min-h-screen" hx-boost="true" hx-swap="innerMorph" >
     <%= erb :"partials/toasts", layout: false %>
     <div class="flex flex-col min-h-screen">
       <%= erb :"partials/topbar", layout: false unless @hide_topbar %>
@@ -63,7 +61,5 @@
         </dialog>
       </div>
     </div>
-
-    <%= erb :"partials/_codedemo", layout: false %>
   </body>
 </html>

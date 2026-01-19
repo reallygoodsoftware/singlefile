@@ -34,8 +34,6 @@ require_relative 'helpers'
 require_relative 'db/models/user'
 
 set :database_file, File.expand_path('db/database.yml', __dir__)
-set :views, File.expand_path('views', __dir__)
-set :public_folder, File.expand_path('.', __dir__)
 
 configure :development do
   also_reload 'helpers.rb'
@@ -45,6 +43,7 @@ end
 helpers AppHelpers
 
 set :host_authorization, { permitted_hosts: ['single-file.dev', 'localhost'] }
+set :public_folder, '.'
 # Disable X-Frame-Options to allow iframe embedding
 set :protection, except: [:frame_options]
 
@@ -90,8 +89,4 @@ get '/logout' do
   redirect '/login'
 end
 
-port = ENV['PORT'] || ARGV.find { |arg| arg =~ /^-p(\d+)$/ && $1 } || ARGV[ARGV.index('-p') + 1] rescue nil || 4567
-set :port, port.to_i
-
-puts "✓ SingleFile starting on http://localhost:#{port}"
 Sinatra::Application.run!
